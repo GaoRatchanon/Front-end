@@ -168,6 +168,145 @@ app.get("/deleteTypes/:type_id", async (req,res) => {
 });
 
 
+//show all user
+app.get('/users',async(req,res) => {
+  try {
+    const response = await axios.get(base_url + '/users');
+    res.render("users" , {users: response.data});
+  }catch (err) {
+    console.error(err);
+    res.status(500).send("Error")
+  }
+})
+
+
+//link page taks in task from usersontypes in backend
+app.get("/usersontasks/:user_id", async (req,res) => {
+  try {
+    const response = await axios.get(base_url + "/usersontasks/" + req.params.user_id);
+    res.render("usersontasks", {data: response.data});
+  } catch(err) {
+    console.error(err);
+    res.status(500).send("Error");
+  }
+});
+
+///////////////////////////////////////////////////////////////
+// link page edit or update form back-end
+app.get("/updateUser/:user_id", async (req,res) => {
+  try {
+    const response = await axios.get(base_url + "/users/" + req.params.user_id);
+    res.render("updateUser", {users: response.data});
+  } catch (err){
+    console.error(err);
+    res.status(500).send("Error");
+  }
+});
+
+//here for you cant put update botton
+app.post("/updateUser/:user_id", async (req,res) => {
+  try{
+    const data = {username: req.body.username , email: req.body.email, password: req.body.password};
+    await axios.put(base_url + "/users/" + req.params.user_id,data);
+    res.redirect("/users");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error");
+  }
+});
+
+app.get("/createUser", (req ,res) => {
+  res.render("createUser");
+})
+
+//link new user form back - end
+app.post("/createUser", async (req,res) => {
+  try{
+    const data = {username: req.body.username , email: req.body.email, password: req.body.password};
+    await axios.post(base_url + "/users", data);
+    res.redirect("/users");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error");
+  }
+});
+
+//delete user
+app.get("/deleteUser/:user_id", async (req,res) => {
+  try{
+    const UserID = req.params.user_id;
+    await axios.delete(base_url + "/users/" + UserID);
+    res.redirect("/users");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error the Delete");
+  }
+});
+
+////////////////ASSIGN//////////////////////////
+
+app.get('/assignments',async(req,res) => {
+  try {
+    const response = await axios.get(base_url + '/assignments');
+    res.render("assignments" , {assignments: response.data});
+  }catch (err) {
+    console.error(err);
+    res.status(500).send("Error")
+  }
+})
+
+
+app.get("/updateAssign/:assign_id", async (req,res) => {
+  try {
+    const response = await axios.get(base_url + "/assignments/" + req.params.assign_id);
+    res.render("updateAssign", {assignments: response.data});
+  } catch (err){
+    console.error(err);
+    res.status(500).send("Error");
+  }
+});
+
+//here for you cant put update botton
+app.post("/updateAssign/:assign_id", async (req, res) => {
+  try {
+    const data = { task_id: req.body.task_id, user_id: req.body.user_id };
+    await axios.put(base_url + "/assignments/" + req.params.assign_id, data);
+    res.redirect("/assignments");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error");
+  }
+});
+
+//delete assign
+app.get("/deleteAssign/:assign_id", async (req,res) => {
+  try{
+    const asID = req.params.assign_id;
+    await axios.delete(base_url + "/assignments/" + asID);
+    res.redirect("/assignments");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error the Delete");
+  }
+});
+
+
+app.get("/createAssign", (req,res) => {
+  res.render("createAssign");
+});
+
+//link page create types form back end
+app.post("/createAssign",async (req, res) => {
+  try {
+    const data = {task_id: req.body.task_id, user_id: req.body.user_id};
+    await axios.post(base_url+ "/assignments",data);
+    res.redirect("/assignments");
+  }catch (err) {
+    console.error(err);
+    res.status(500).send("Error");
+  }
+});
+
 app.listen(5500 , () => {
   console.log("Server started on port 5500");
 });

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <head>
     <title>TaskOnType</title>
+    <link rel="stylesheet" href="/css/style.css">
 
 </head>
 <body>
@@ -10,17 +11,14 @@
             <th>Title</th>
             <th>discription</th>
             <th>duedata</th>
-            <th>Action</th>
+            
         </tr>
         <tr>
             <% for (let i =0; i< data.length; i++) { %>
             <td><%= data[i].title %></td>
             <td><%= data[i].discription %></td>
             <td><%= data[i].duedate %></td>
-            <td>
-                <a href="/update/ <%= data[i].type_id %>">Edit</a>
-                <a href="/delete/ <%= data[i].type_id %>">Delete</a>
-            </td>
+           
             
         </tr>
         <% } %>
